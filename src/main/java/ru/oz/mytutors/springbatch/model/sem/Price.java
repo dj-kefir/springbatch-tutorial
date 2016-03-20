@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import ru.oz.mytutors.springbatch.model.SearchConstants;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.time.LocalDate;
 
 /**
@@ -14,9 +16,11 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@XmlRootElement(name = "price")
+//@XmlRootElement(name = "price")
+@XmlRootElement(name = "sphinx:document")
 public class Price {
     @JsonProperty(value = SearchConstants.PRICE_ID)
+    @XmlAttribute(name = "id")
     private long priceId;
     @JsonProperty(value = SearchConstants.PRODUCT_ID)
     private Long productId;
@@ -58,5 +62,10 @@ public class Price {
         this.pickupToday = pickupToday;
         this.deliveryDate = deliveryDate == null ? LocalDate.of(2000, 1, 1) : deliveryDate;                 //default value
         this.nextDeliveryDate = nextDeliveryDate == null ? LocalDate.of(2000, 1, 1) : nextDeliveryDate;     //default value
+    }
+
+    @XmlTransient
+    public long getPriceId() {
+        return priceId;
     }
 }

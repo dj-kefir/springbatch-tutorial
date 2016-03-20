@@ -12,7 +12,7 @@ import ru.oz.mytutors.springbatch.model.sem.Price;
 @Component
 public class PriceItemProcessor implements ItemProcessor<Price, Price> {
     public Price process(Price price) throws Exception {
-        log.info("price {} converted...", price.getPriceId());
+       // log.info("price {} converted...", price.getPriceId());
         return price;
     }
 }
