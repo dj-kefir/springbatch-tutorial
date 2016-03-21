@@ -2,7 +2,7 @@ package ru.oz.mytutors.springbatch.model.sem;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import ru.oz.mytutors.springbatch.model.SearchConstants;
+import ru.oz.mytutors.springbatch.SearchConstants;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,7 +16,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-//@XmlRootElement(name = "price")
 @XmlRootElement(name = "sphinx:document")
 public class Price {
     @JsonProperty(value = SearchConstants.PRICE_ID)

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.xml.StaxWriterCallback;
 import org.springframework.stereotype.Component;
 import org.springframework.util.xml.StaxUtils;
-import ru.oz.mytutors.springbatch.model.SearchConstants;
 
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
@@ -13,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 
-import static ru.oz.mytutors.springbatch.model.SearchConstants.*;
+import static ru.oz.mytutors.springbatch.SearchConstants.*;
 
 /**
  * Created by Igor Ozol

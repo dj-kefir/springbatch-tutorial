@@ -6,9 +6,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="database-context.xml"/>
-
     <context:component-scan base-package="ru.oz.mytutors.springbatch"/>
+
+    <import resource="database-context.xml"/>
+    <import resource="product-data.xml"/>
+
 
     <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">
@@ -109,7 +111,7 @@
 
     <bean id="priceReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
-        <property name="resource" value="classpath:data/sem/msk_price_small.csv"/>
+        <property name="resource" value="classpath:data/sem/prices/msk_price_small.csv"/>
         <property name="strict" value="true"></property>
 
         <property name="lineMapper">
@@ -129,7 +131,7 @@
 
     <bean id="categoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
-        <property name="resource" value="classpath:data/sem/vr_cat2.csv"/>
+        <property name="resource" value="classpath:data/sem/categories/vr_cat2.csv"/>
         <property name="strict" value="true"></property>
 
         <property name="lineMapper">
@@ -157,18 +159,54 @@
                     <batch:skippable-exception-classes>
                         <batch:include class="org.springframework.batch.item.file.FlatFileParseException"/>
                     </batch:skippable-exception-classes>
-
                 </batch:chunk>
 
                 <batch:listeners>
                     <batch:listener ref="skipListener"/>
                 </batch:listeners>
-
             </batch:tasklet>
         </batch:step>
 
-        <batch:step id="categoryConvertStep">
+        <batch:step id="categoryConvertStep" next="productCategoryLinkConvertStep">
             <batch:tasklet ref="categoryTasklet"/>
+
+            <batch:listeners>
+                <batch:listener ref="skipListener"/>
+            </batch:listeners>
+        </batch:step>
+
+        <batch:step id="productCategoryLinkConvertStep" next="productCategoryNameConvertStep">
+            <batch:tasklet>
+                <batch:chunk reader="productCategoryLinkReader"
+                             writer="productCategoryWriter"
+                             commit-interval="10" skip-limit="10">
+
+                    <batch:skippable-exception-classes>
+                        <batch:include class="org.springframework.batch.item.file.FlatFileParseException"/>
+                    </batch:skippable-exception-classes>
+                </batch:chunk>
+
+                <batch:listeners>
+                    <batch:listener ref="skipListener"/>
+                </batch:listeners>
+            </batch:tasklet>
+        </batch:step>
+
+        <batch:step id="productCategoryNameConvertStep">
+            <batch:tasklet>
+                <batch:chunk reader="productCategoryNameReader"
+                             writer="productCategoryWriter"
+                             commit-interval="10" skip-limit="10">
+
+                    <batch:skippable-exception-classes>
+                        <batch:include class="org.springframework.batch.item.file.FlatFileParseException"/>
+                    </batch:skippable-exception-classes>
+                </batch:chunk>
+
+                <batch:listeners>
+                    <batch:listener ref="skipListener"/>
+                </batch:listeners>
+            </batch:tasklet>
         </batch:step>
     </batch:job>
 

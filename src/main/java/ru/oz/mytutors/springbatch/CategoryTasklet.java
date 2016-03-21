@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import ru.oz.mytutors.springbatch.model.SearchConstants;
 import ru.oz.mytutors.springbatch.model.sem.Category;
 import ru.oz.mytutors.springbatch.writers.UtilsWriter;
 
@@ -35,7 +34,7 @@ public class CategoryTasklet implements Tasklet {
     private final static int CAT_LINK = 7;
     private final static int SMALL_IMG = 15;
 
-    @Value("classpath:data/sem/vr_cat_small.csv")
+    @Value("classpath:data/sem/categories/vr_cat_small.csv")
     private Resource sourceCsvFile;
 
     @Value("file:data/outs/category.xml")

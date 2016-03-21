@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="productCategoryLinkReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="linesToSkip" value="1"/>
+        <property name="resource" value="classpath:data/sem/products/categorylink.csv"/>
+        <property name="strict" value="true"></property>
+
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="delimiter" value=";"/>
+                        <property name="names" value="category_id;category_uri;category_link"/>
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean class="ru.oz.mytutors.springbatch.mappers.product.ProductCategoryMapper" >
+                        <property name="fileType" value="CATEGORY_LINK"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="productCategoryNameReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="linesToSkip" value="1"/>
+        <property name="resource" value="classpath:data/sem/products/categorylink.csv"/>
+        <property name="strict" value="true"></property>
+
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="delimiter" value=";"/>
+                        <property name="names" value="category_id;category_name"/>
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean class="ru.oz.mytutors.springbatch.mappers.product.ProductCategoryMapper" >
+                        <property name="fileType" value="CATEGORY_NAME"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="productBrandReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="linesToSkip" value="1"/>
+        <property name="resource" value="classpath:data/sem/products/categorylink.csv"/>
+        <property name="strict" value="true"></property>
+
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="delimiter" value=";"/>
+                        <property name="names" value="brand_id;brand_name"/>
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean class="ru.oz.mytutors.springbatch.mappers.product.BrandMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="productCategoryWriter" class="ru.oz.mytutors.springbatch.writers.ProductCategoryWriter"/>
+
+    <bean id="productBrandWriter" class="ru.oz.mytutors.springbatch.writers.ProductBrandWriter"/>
+
+    <util:map id="idToCategoryMap" map-class="java.util.HashMap" key-type="java.lang.Long" value-type="ru.oz.mytutors.springbatch.model.sem.Category">
+    </util:map>
+
+    <util:list id="productBrands" value-type="ru.oz.mytutors.springbatch.model.upload.Brand">
+    </util:list>
+
+
+
+</beans>

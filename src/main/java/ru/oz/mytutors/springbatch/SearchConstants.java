@@ -1,4 +1,4 @@
-package ru.oz.mytutors.springbatch.model;
+package ru.oz.mytutors.springbatch;
 
 /**
  * Created by ozol on 18.03.2016.

@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.IOException;
 
-import static ru.oz.mytutors.springbatch.model.SearchConstants.*;
+import static ru.oz.mytutors.springbatch.SearchConstants.*;
 
 /**
  * Created by Igor Ozol
