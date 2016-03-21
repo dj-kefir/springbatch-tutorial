@@ -30,6 +30,8 @@ public class CategoryHeaderCallback implements StaxWriterCallback {
         XMLStreamWriter writer = StaxUtils.createEventStreamWriter(eventWriter, factory);
 
         try {
+            writer.writeCharacters("\n");
+            writer.writeCharacters("\t");
             writer.writeStartElement("sphinx:schema");
             writer.writeCharacters("\n");
             UtilsWriter.writeSchemaField(writer, CATEGORY_NAME, true);

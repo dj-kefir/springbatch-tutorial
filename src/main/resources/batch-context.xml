@@ -10,11 +10,12 @@
 
     <context:component-scan base-package="ru.oz.mytutors.springbatch"/>
 
-    <bean id="modelMarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+    <bean id="jaxb2Marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
         <property name="classesToBeBound">
             <list>
                 <value>ru.oz.mytutors.springbatch.model.Student</value>
                 <value>ru.oz.mytutors.springbatch.model.sem.Price</value>
+                <value>ru.oz.mytutors.springbatch.model.sem.Category</value>
             </list>
         </property>
         <property name="marshallerProperties">
@@ -27,11 +28,19 @@
     </bean>
 
     <bean id="priceItemWriter" class="ru.oz.mytutors.springbatch.writers.IndentingStaxEventItemWriter">
-        <property name="resource" value="file:data/outs/out.xml"/>
-        <property name="marshaller" ref="modelMarshaller"/>
+        <property name="resource" value="file:data/outs/price.xml"/>
+        <property name="marshaller" ref="jaxb2Marshaller"/>
         <property name="rootTagName" value="sphinx:docset"/>
         <property name="headerCallback" ref="priceHeaderCallback" />
     </bean>
+
+    <bean id="categoryItemWriter" class="ru.oz.mytutors.springbatch.writers.IndentingStaxEventItemWriter">
+        <property name="resource" value="file:data/outs/category.xml"/>
+        <property name="marshaller" ref="jaxb2Marshaller"/>
+        <property name="rootTagName" value="sphinx:docset"/>
+        <property name="headerCallback" ref="categoryHeaderCallback"/>
+    </bean>
+
 
     <bean id="cvsFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
@@ -106,7 +115,6 @@
         <property name="lineMapper">
             <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
                 <property name="lineTokenizer">
-
                     <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
                         <property name="delimiter" value=";"/>
                         <property name="names" value="PID,PRICE_VALUE"/>
@@ -119,8 +127,27 @@
         </property>
     </bean>
 
-    <batch:job id="priceCsvToXmlConvertionJob">
-        <batch:step id="step2">
+    <bean id="categoryReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+        <property name="linesToSkip" value="1"/>
+        <property name="resource" value="classpath:data/sem/vr_cat2.csv"/>
+        <property name="strict" value="true"></property>
+
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="delimiter" value=";"/>
+                    </bean>
+                </property>
+                <property name="fieldSetMapper">
+                    <bean class="ru.oz.mytutors.springbatch.mappers.CategoryMapper"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <batch:job id="indexingJob">
+        <batch:step id="priceConvertStep" next="categoryConvertStep">
             <batch:tasklet>
                 <batch:chunk reader="priceReader"
                              writer="priceItemWriter"
@@ -134,23 +161,16 @@
                 </batch:chunk>
 
                 <batch:listeners>
-                    <batch:listener ref="skipListener" />
+                    <batch:listener ref="skipListener"/>
                 </batch:listeners>
 
             </batch:tasklet>
         </batch:step>
-    </batch:job>
 
-    <!--public static final String PRICE = "price";-->
-    <!--public static final String PRICE_ID = "price_id";-->
-    <!--public static final String OLD_PRICE = "old_price";-->
-    <!--public static final String BESTSELLER = "bestseller";-->
-    <!--public static final String PICKUP_TODAY = "pickup_today";-->
-    <!--public static final String DELIVERY_DATE = "delivery_date";-->
-    <!--public static final String NEXT_DELIVERY_DATE = "next_delivery_date";-->
-    <!--public static final String UNAVAILABLE_BASESTORES = "unavailable_basestores";-->
-    <!--public static final String FILTERS = "filters";-->
-    <!--public static final String RATING = "rating";-->
+        <batch:step id="categoryConvertStep">
+            <batch:tasklet ref="categoryTasklet"/>
+        </batch:step>
+    </batch:job>
 
     <bean id="priceHeaderCallback" class="ru.oz.mytutors.springbatch.writers.PriceHeaderCallback" >
         <property name="attributeNamesToTypes">

@@ -19,8 +19,6 @@ public class PriceMapper implements FieldSetMapper<Price> {
         price.setPriceValue(fieldSet.readDouble(BatchConstants.PRICES.PRICE_VALUE));
 
         log.info("price {} was read...", price.getProductId());
-//        if (!(fieldSet.readString("PRICE").isEmpty()))
-//            price.setPriceValue(fieldSet.readDouble("PRICE"));
 
         return price;
     }

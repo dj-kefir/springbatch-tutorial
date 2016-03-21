@@ -24,7 +24,7 @@ public class App {
                 new ClassPathXmlApplicationContext(springConfig);
 
         JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
-        Job job = (Job) context.getBean("priceCsvToXmlConvertionJob");
+        Job job = (Job) context.getBean("indexingJob");
 
         try {
 
