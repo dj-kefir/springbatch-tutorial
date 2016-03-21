@@ -13,7 +13,7 @@
                 <property name="lineTokenizer">
                     <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
                         <property name="delimiter" value=";"/>
-                        <property name="names" value="category_id;category_uri;category_link"/>
+                        <property name="names" value="category_id,category_uri,category_link"/>
                     </bean>
                 </property>
                 <property name="fieldSetMapper">
@@ -27,7 +27,7 @@
 
     <bean id="productCategoryNameReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
-        <property name="resource" value="classpath:data/sem/products/categorylink.csv"/>
+        <property name="resource" value="classpath:data/sem/products/categoryname.csv"/>
         <property name="strict" value="true"></property>
 
         <property name="lineMapper">
@@ -35,7 +35,7 @@
                 <property name="lineTokenizer">
                     <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
                         <property name="delimiter" value=";"/>
-                        <property name="names" value="category_id;category_name"/>
+                        <property name="names" value="category_id,category_name"/>
                     </bean>
                 </property>
                 <property name="fieldSetMapper">
@@ -49,7 +49,7 @@
 
     <bean id="productBrandReader" class="org.springframework.batch.item.file.FlatFileItemReader">
         <property name="linesToSkip" value="1"/>
-        <property name="resource" value="classpath:data/sem/products/categorylink.csv"/>
+        <property name="resource" value="classpath:data/sem/products/brand.csv"/>
         <property name="strict" value="true"></property>
 
         <property name="lineMapper">
@@ -67,7 +67,13 @@
         </property>
     </bean>
 
-    <bean id="productCategoryWriter" class="ru.oz.mytutors.springbatch.writers.ProductCategoryWriter"/>
+    <bean id="productCategoryLinkWriter" class="ru.oz.mytutors.springbatch.writers.ProductCategoryWriter">
+        <property name="fileType" value="CATEGORY_LINK" />
+     </bean>
+
+    <bean id="productCategoryNameWriter" class="ru.oz.mytutors.springbatch.writers.ProductCategoryWriter">
+        <property name="fileType" value="CATEGORY_NAME" />
+    </bean>
 
     <bean id="productBrandWriter" class="ru.oz.mytutors.springbatch.writers.ProductBrandWriter"/>
 

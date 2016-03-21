@@ -178,7 +178,7 @@
         <batch:step id="productCategoryLinkConvertStep" next="productCategoryNameConvertStep">
             <batch:tasklet>
                 <batch:chunk reader="productCategoryLinkReader"
-                             writer="productCategoryWriter"
+                             writer="productCategoryLinkWriter"
                              commit-interval="10" skip-limit="10">
 
                     <batch:skippable-exception-classes>
@@ -195,7 +195,7 @@
         <batch:step id="productCategoryNameConvertStep">
             <batch:tasklet>
                 <batch:chunk reader="productCategoryNameReader"
-                             writer="productCategoryWriter"
+                             writer="productCategoryNameWriter"
                              commit-interval="10" skip-limit="10">
 
                     <batch:skippable-exception-classes>

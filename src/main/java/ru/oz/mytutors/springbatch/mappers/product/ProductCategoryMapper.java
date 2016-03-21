@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.BindException;
 import ru.oz.mytutors.springbatch.model.CategoryFileType;
 import ru.oz.mytutors.springbatch.model.sem.Category;
@@ -15,7 +14,6 @@ import ru.oz.mytutors.springbatch.model.sem.Category;
  * Eldorado LLC
  */
 @Slf4j
-@Component("productCategoryMapper")
 @Data
 public class ProductCategoryMapper implements FieldSetMapper<Category> {
 
